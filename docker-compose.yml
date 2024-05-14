@@ -18,7 +18,7 @@ services:
   nginx:
     image: nginx:1.25
     ports:
-      - '80'
+      - "80:80"
     networks:
       default:
         aliases:

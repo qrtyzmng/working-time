@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\WorkingTime\Domain\Entity;
 
-use App\WorkingTime\Domain\ValueObject\Uuid;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table]
@@ -13,7 +12,7 @@ class WorkingTime
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
-    private Uuid $uuid;
+    private string $uuid;
 
     #[ORM\ManyToOne(targetEntity: Employee::class, inversedBy: 'workingTimes')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'uuid')]

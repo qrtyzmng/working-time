@@ -1,5 +1,5 @@
-controllers:
+rest_api_controllers:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/WorkingTime/Application/Controller
+        namespace: App\WorkingTime\Application\Controller
     type: attribute

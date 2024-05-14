@@ -11,12 +11,17 @@
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "^3.1",
+        "friendsofsymfony/rest-bundle": "^3.7",
+        "jms/serializer-bundle": "^5.4",
         "symfony/console": "7.0.*",
         "symfony/dotenv": "7.0.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.0.*",
+        "symfony/messenger": "7.0.*",
         "symfony/runtime": "7.0.*",
+        "symfony/serializer": "7.0.*",
         "symfony/uid": "7.0.*",
+        "symfony/validator": "7.0.*",
         "symfony/yaml": "7.0.*"
     },
     "require-dev": {
@@ -25,7 +30,8 @@
         "phpstan/phpstan-doctrine": "^1.4",
         "phpstan/phpstan-phpunit": "^1.4",
         "phpstan/phpstan-symfony": "^1.4",
-        "phpunit/phpunit": "^11.1"
+        "phpunit/phpunit": "^11.1",
+        "symfony/browser-kit": "7.0.*"
     },
     "config": {
         "allow-plugins": {
@@ -42,7 +48,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "Tests\\Unit\\": "tests/unit",
+            "Tests\\Functional\\": "tests/functional"
         }
     },
     "replace": {

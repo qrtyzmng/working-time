@@ -3,10 +3,7 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
         server_version: '8.4'
         mapping_types:
-            uuid: binary
             enum: string
-        types:
-            uuid: App\WorkingTime\Infrastructure\DoctrineDBAL\Type\UuidType
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
     orm:
