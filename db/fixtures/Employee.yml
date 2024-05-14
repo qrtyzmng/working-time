@@ -1,0 +1,6 @@
+App\WorkingTime\Domain\Entity\Employee:
+  employee_1:
+    __construct:
+      uuid: '90de9dbe-007a-42e1-83a6-e342d26a88cc'
+      firstname: 'John'
+      lastname: 'Doe'

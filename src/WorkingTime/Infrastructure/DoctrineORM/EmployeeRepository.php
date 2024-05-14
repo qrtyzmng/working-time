@@ -16,6 +16,11 @@ class EmployeeRepository extends ServiceEntityRepository implements EmployeeRepo
         parent::__construct($registry, Employee::class);
     }
 
+    public function findByUuid(string $uuid): ?Employee
+    {
+        return $this->find($uuid);
+    }
+
     public function create(Employee $employee): void
     {
         $em = $this->getEntityManager();

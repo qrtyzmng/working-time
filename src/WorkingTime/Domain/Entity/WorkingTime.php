@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\WorkingTime\Domain\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Table]
 #[ORM\Entity]
@@ -26,4 +27,13 @@ class WorkingTime
 
     #[ORM\Column(type: 'date')]
     private \DateTime $startDay;
+
+    public function __construct(\DateTime $startDateTime, \DateTime $endDateTime, Employee $employee)
+    {
+        $this->uuid = Uuid::v4()->toRfc4122();
+        $this->startDay = $startDateTime;
+        $this->startDateTime = $startDateTime;
+        $this->endDateTime = $endDateTime;
+        $this->employee = $employee;
+    }
 }
