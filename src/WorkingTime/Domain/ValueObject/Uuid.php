@@ -2,15 +2,38 @@
 
 declare(strict_types=1);
 
-namespace App\WorkingTime\Domain\ValueObject\Uuid;
+namespace App\WorkingTime\Domain\ValueObject;
 
-class InvalidUuidException extends \InvalidArgumentException
+use App\WorkingTime\Domain\Exception\InvalidUuidException;
+use Symfony\Component\Uid\Uuid as SymfonyUuid;
+
+class Uuid
 {
-    public static function create(string $unit): self
+    private string $id;
+
+    private function __construct(string $id)
     {
-        return new self(\sprintf(
-            "'%s' is not valid UUid.",
-            $unit
-        ));
+        $this->id = $id;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public static function create(): self
+    {
+        return new self(
+            SymfonyUuid::v4()->toRfc4122()
+        );
+    }
+
+    public static function fromString(string $uuid): self
+    {
+        if (false === SymfonyUuid::isValid($uuid)) {
+            throw InvalidUuidException::create($uuid);
+        }
+
+        return new self($uuid);
     }
 }
