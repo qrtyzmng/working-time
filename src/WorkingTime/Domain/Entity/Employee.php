@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\WorkingTime\Domain\Entity;
 
 use App\WorkingTime\Domain\ValueObject\Uuid;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Table]
@@ -20,4 +21,7 @@ class Employee
 
     #[ORM\Column(type: 'string', length: 32)]
     private string $lastname;
+
+    #[ORM\OneToMany(targetEntity: WorkingTime::class, mappedBy: 'employee')]
+    private Collection $workingTimes;
 }
