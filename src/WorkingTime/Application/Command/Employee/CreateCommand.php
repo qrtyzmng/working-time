@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\WorkingTime\Application\Command\Employee;
 
+use App\WorkingTime\Application\Command\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateCommand
+class CreateCommand implements CommandInterface
 {
     #[Assert\NotBlank]
     #[Assert\Uuid]

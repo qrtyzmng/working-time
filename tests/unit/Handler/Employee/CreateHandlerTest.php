@@ -7,7 +7,7 @@ namespace Tests\Unit\Handler\Employee;
 use App\WorkingTime\Application\Command\Employee\CreateCommand;
 use App\WorkingTime\Application\Handler\Employee\CreateHandler;
 use App\WorkingTime\Domain\Entity\Employee;
-use App\WorkingTime\Domain\Factory\EmployeeFactory;
+use App\WorkingTime\Domain\Factory\EmployeeFactoryInterface;
 use App\WorkingTime\Infrastructure\DoctrineORM\EmployeeRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,13 +16,13 @@ use Symfony\Component\Uid\Uuid;
 final class CreateHandlerTest extends TestCase
 {
     private EmployeeRepository&MockObject $repository;
-    private EmployeeFactory&MockObject $factory;
+    private EmployeeFactoryInterface&MockObject $factory;
     private CreateHandler $handler;
 
     protected function setUp(): void
     {
         $this->repository = $this->createMock(EmployeeRepository::class);
-        $this->factory = $this->createMock(EmployeeFactory::class);
+        $this->factory = $this->createMock(EmployeeFactoryInterface::class);
         $this->handler = new CreateHandler($this->repository, $this->factory);
     }
 

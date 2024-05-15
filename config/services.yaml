@@ -32,3 +32,6 @@ services:
             $monthlyHourlyNorm: '%monthlyHourlyNorm%'
             $hourlyRate: '%hourlyRate%'
             $overTimeRate: '%overTimeRate%'
+
+    App\WorkingTime\Domain\Factory\EmployeeFactoryInterface:
+        class: App\WorkingTime\Domain\Factory\EmployeeFactory

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\WorkingTime\Application\Handler\Employee;
 
 use App\WorkingTime\Application\Command\Employee\CreateCommand;
-use App\WorkingTime\Domain\Factory\EmployeeFactory;
+use App\WorkingTime\Domain\Factory\EmployeeFactoryInterface;
 use App\WorkingTime\Domain\Repository\EmployeeRepositoryInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class CreateHandler
 {
-    public function __construct(private EmployeeRepositoryInterface $repository, private EmployeeFactory $factory)
+    public function __construct(private EmployeeRepositoryInterface $repository, private EmployeeFactoryInterface $factory)
     {
     }
 
