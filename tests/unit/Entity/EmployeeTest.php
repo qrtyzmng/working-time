@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Entity;
 
 use App\WorkingTime\Domain\Entity\Employee;
+use App\WorkingTime\Infrastructure\DoctrineDBAL\UuidV4;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Uid\Uuid;
 
 final class EmployeeTest extends TestCase
 {
@@ -15,7 +15,7 @@ final class EmployeeTest extends TestCase
      */
     public function it_can_init_employee(): void
     {
-        $uuid = Uuid::v4()->toRfc4122();
+        $uuid = UuidV4::create();
         $firstname = 'John';
         $lastname = 'Doe';
         $employee = new Employee($uuid, $firstname, $lastname);

@@ -12,6 +12,7 @@ use App\WorkingTime\Domain\Entity\WorkingTime;
 use App\WorkingTime\Domain\Exception\ResourceNotFoundException;
 use App\WorkingTime\Domain\Repository\EmployeeRepositoryInterface;
 use App\WorkingTime\Domain\Repository\WorkingTimeRepositoryInterface;
+use App\WorkingTime\Infrastructure\DoctrineDBAL\UuidV4;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
@@ -83,7 +84,7 @@ final class SummaryHandlerTest extends TestCase
 
         $employee->expects($this->once())
             ->method('getUuid')
-            ->willReturn($query->employeeUuid);
+            ->willReturn(UuidV4::fromString($query->employeeUuid));
 
         $this->workingTimeRepository->expects($this->once())
             ->method('findByEmployeesStartDate')
@@ -111,7 +112,7 @@ final class SummaryHandlerTest extends TestCase
 
         $employee->expects($this->once())
             ->method('getUuid')
-            ->willReturn($query->employeeUuid);
+            ->willReturn(UuidV4::fromString($query->employeeUuid));
 
         $workingTime = $this->createMock(WorkingTime::class);
         $this->workingTimeRepository->expects($this->once())

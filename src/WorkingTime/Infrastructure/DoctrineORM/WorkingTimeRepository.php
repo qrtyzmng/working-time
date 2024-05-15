@@ -6,6 +6,7 @@ namespace App\WorkingTime\Infrastructure\DoctrineORM;
 
 use App\WorkingTime\Domain\Entity\WorkingTime;
 use App\WorkingTime\Domain\Repository\WorkingTimeRepositoryInterface;
+use App\WorkingTime\Domain\ValueObject\UuidInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,7 +17,7 @@ class WorkingTimeRepository extends ServiceEntityRepository implements WorkingTi
         parent::__construct($registry, WorkingTime::class);
     }
 
-    public function findByEmployeesStartDate(string $employeeUuid, \DateTime $startDate): ?WorkingTime
+    public function findByEmployeesStartDate(UuidInterface $employeeUuid, \DateTime $startDate): ?WorkingTime
     {
         return $this->findOneBy(['employee' => $employeeUuid, 'startDay' => $startDate]);
     }

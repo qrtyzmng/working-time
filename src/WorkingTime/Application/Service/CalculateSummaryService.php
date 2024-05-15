@@ -19,7 +19,7 @@ final readonly class CalculateSummaryService implements CalculateSummaryServiceI
         $totalMinutes = $this->convertToMinutes($startDateTime, $endDateTime);
 
         return [
-            'id' => $workingTime->getUuid(),
+            'id' => $workingTime->getUuid()->getId(),
             'startDateTime' => $startDateTime->format('Y-m-d H:i:s'),
             'endDateTime' => $endDateTime->format('Y-m-d H:i:s'),
             'totalMinutes' => $totalMinutes,

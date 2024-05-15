@@ -30,7 +30,7 @@ final class CalculateSummaryServiceTest extends TestCase
         );
 
         $calculations = $this->calculateService->calculate($workingTime);
-        $this->assertSame($workingTime->getUuid(), $calculations['id']);
+        $this->assertSame($workingTime->getUuid()->getId(), $calculations['id']);
         $this->assertSame($workingTime->getStartDateTime()->format('Y-m-d H:i:s'), $calculations['startDateTime']);
         $this->assertSame($workingTime->getEndDateTime()->format('Y-m-d H:i:s'), $calculations['endDateTime']);
         $this->assertSame(363, $calculations['totalMinutes']);

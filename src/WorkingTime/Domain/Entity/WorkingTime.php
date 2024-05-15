@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\WorkingTime\Domain\Entity;
 
+use App\WorkingTime\Domain\ValueObject\UuidInterface;
+use App\WorkingTime\Infrastructure\DoctrineDBAL\UuidV4;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
 
 #[ORM\Table]
 #[ORM\Entity]
 class WorkingTime
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
-    private string $uuid;
+    #[ORM\Column(type: 'uuid_v4', unique: true)]
+    private UuidInterface $uuid;
 
     #[ORM\ManyToOne(targetEntity: Employee::class, inversedBy: 'workingTimes')]
-    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'uuid')]
+    #[ORM\JoinColumn(name: 'employee_uuid', referencedColumnName: 'uuid')]
     private Employee $employee;
 
     #[ORM\Column(type: 'datetime')]
@@ -30,14 +31,14 @@ class WorkingTime
 
     public function __construct(\DateTime $startDateTime, \DateTime $endDateTime, Employee $employee)
     {
-        $this->uuid = Uuid::v4()->toRfc4122();
+        $this->uuid = UuidV4::create();
         $this->startDay = $startDateTime;
         $this->startDateTime = $startDateTime;
         $this->endDateTime = $endDateTime;
         $this->employee = $employee;
     }
 
-    public function getUuid(): string
+    public function getUuid(): UuidInterface
     {
         return $this->uuid;
     }

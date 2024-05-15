@@ -6,6 +6,7 @@ namespace App\WorkingTime\Infrastructure\DoctrineORM;
 
 use App\WorkingTime\Domain\Entity\Employee;
 use App\WorkingTime\Domain\Repository\EmployeeRepositoryInterface;
+use App\WorkingTime\Infrastructure\DoctrineDBAL\UuidV4;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,7 +19,7 @@ class EmployeeRepository extends ServiceEntityRepository implements EmployeeRepo
 
     public function findByUuid(string $uuid): ?Employee
     {
-        return $this->find($uuid);
+        return $this->find(UuidV4::fromString($uuid));
     }
 
     public function create(Employee $employee): void

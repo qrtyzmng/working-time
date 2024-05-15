@@ -13,6 +13,7 @@ use App\WorkingTime\Domain\Exception\ResourceNotFoundException;
 use App\WorkingTime\Domain\Exception\StartDateAlreadyExistingException;
 use App\WorkingTime\Domain\Repository\EmployeeRepositoryInterface;
 use App\WorkingTime\Domain\Repository\WorkingTimeRepositoryInterface;
+use App\WorkingTime\Infrastructure\DoctrineDBAL\UuidV4;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Uid\Uuid;
@@ -82,7 +83,7 @@ final class CreateHandlerTest extends TestCase
 
         $employee->expects($this->once())
             ->method('getUuid')
-            ->willReturn($command->employeeUuid);
+            ->willReturn(UuidV4::fromString($command->employeeUuid));
 
         $this->workingTimeRepository->expects($this->once())
             ->method('findByEmployeesStartDate')
@@ -110,7 +111,7 @@ final class CreateHandlerTest extends TestCase
 
         $employee->expects($this->once())
             ->method('getUuid')
-            ->willReturn($command->employeeUuid);
+            ->willReturn(UuidV4::fromString($command->employeeUuid));
 
         $this->workingTimeRepository->expects($this->once())
             ->method('findByEmployeesStartDate')

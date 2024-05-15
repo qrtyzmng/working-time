@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Factory;
 
 use App\WorkingTime\Domain\Factory\EmployeeFactory;
+use App\WorkingTime\Infrastructure\DoctrineDBAL\UuidV4;
 use PHPUnit\Framework\TestCase;
 
 final class EmployeeFactoryTest extends TestCase
@@ -15,7 +16,7 @@ final class EmployeeFactoryTest extends TestCase
     public function it_creates_employee(): void
     {
         $factory = new EmployeeFactory();
-        $uuid = '102e0bc2-ccd0-425e-95ba-07299cb4b9b0';
+        $uuid = UuidV4::fromString('102e0bc2-ccd0-425e-95ba-07299cb4b9b0');
         $firstname = 'John';
         $lastname = 'Doe';
         $employee = $factory->create($uuid, $firstname, $lastname);
