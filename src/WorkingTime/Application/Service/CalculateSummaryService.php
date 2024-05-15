@@ -6,34 +6,10 @@ namespace App\WorkingTime\Application\Service;
 
 use App\WorkingTime\Domain\Entity\WorkingTime;
 
-final class CalculateSummaryService
+final readonly class CalculateSummaryService implements CalculateSummaryServiceInterface
 {
-    private int $totalMinutes = 0;
-
-    public function __construct(private int $monthlyHourlyNorm, private int $hourlyRate, private int $overTimeRate)
+    public function __construct(private int $hourlyRate)
     {
-    }
-
-    /**
-     * @param WorkingTime[] $workingTimes
-     */
-    public function calculateAll(array $workingTimes)
-    {
-        foreach ($workingTimes as $workingTime) {
-            $this->calculate($workingTime);
-        }
-
-        $overTimeTotalMinutes = \max($this->totalMinutes - ($this->monthlyHourlyNorm * 60), 0);
-        $monthlyOvertimeTotal = $this->calculateRoundedTotal($overTimeTotalMinutes, $this->overTimeRate);
-        $monthlyBaseTotal = $this->calculateRoundedTotal($this->totalMinutes - $overTimeTotalMinutes);
-
-        return [
-            'monthlyTotalMinutes' => $this->totalMinutes,
-            'overTimeTotalMinutes' => $overTimeTotalMinutes,
-            'monthlyOvertimeTotal' => $this->calculateRoundedTotal($overTimeTotalMinutes, $this->overTimeRate),
-            'monthlyBaseTotal' => $this->calculateRoundedTotal($this->totalMinutes - $overTimeTotalMinutes),
-            'total' => $monthlyOvertimeTotal + $monthlyBaseTotal,
-        ];
     }
 
     public function calculate(WorkingTime $workingTime): array
@@ -41,7 +17,6 @@ final class CalculateSummaryService
         $startDateTime = $workingTime->getStartDateTime();
         $endDateTime = $workingTime->getEndDateTime();
         $totalMinutes = $this->convertToMinutes($startDateTime, $endDateTime);
-        $this->totalMinutes += $totalMinutes;
 
         return [
             'id' => $workingTime->getUuid(),
@@ -57,10 +32,10 @@ final class CalculateSummaryService
         return \abs($startDateTime->getTimestamp() - $endDateTime->getTimestamp()) / 60;
     }
 
-    private function calculateRoundedTotal(int $totalMinutes, int $overTimeRate = 1): int|float
+    private function calculateRoundedTotal(int $totalMinutes): int|float
     {
         $totalHours = $totalMinutes / 60;
 
-        return \floor(($totalHours * 2) / 2) * ($this->hourlyRate * $overTimeRate);
+        return \floor(($totalHours * 2) / 2) * $this->hourlyRate;
     }
 }

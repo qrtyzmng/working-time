@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\WorkingTime\Application\Handler\WorkingTime;
 
 use App\WorkingTime\Application\Query\WorkingTime\SummaryQuery;
-use App\WorkingTime\Application\Service\CalculateSummaryService;
+use App\WorkingTime\Application\Service\CalculateSummaryServiceInterface;
 use App\WorkingTime\Domain\Entity\Employee;
 use App\WorkingTime\Domain\Entity\WorkingTime;
 use App\WorkingTime\Domain\Exception\ResourceNotFoundException;
@@ -19,7 +19,7 @@ class SummaryHandler
     public function __construct(
         private EmployeeRepositoryInterface $repository,
         private WorkingTimeRepositoryInterface $workingTimeRepository,
-        private CalculateSummaryService $calculateSummaryService,
+        private CalculateSummaryServiceInterface $calculateSummaryService,
     ) {
     }
 
@@ -40,17 +40,6 @@ class SummaryHandler
             return $this->calculateSummaryService->calculate($workingTime);
         }
 
-        $monthlyFormat = \DateTime::createFromFormat('Y-m', $query->date);
-        if ($monthlyFormat) {
-            $workingTimes = $this->workingTimeRepository->findForMonthlyReport($employee->getUuid(), $monthlyFormat);
-
-            if (empty($workingTimes)) {
-                throw new ResourceNotFoundException(message: 'WorkingTime not found');
-            }
-
-            return $this->calculateSummaryService->calculateAll($workingTimes);
-        }
-
-        throw new ResourceNotFoundException(message: 'WorkingTime not found');
+        throw new ResourceNotFoundException(message: 'WorkingTime not found for provided date format');
     }
 }

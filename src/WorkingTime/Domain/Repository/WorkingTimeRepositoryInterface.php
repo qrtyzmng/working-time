@@ -10,11 +10,6 @@ interface WorkingTimeRepositoryInterface
 {
     public function findByEmployeesStartDate(string $employeeUuid, \DateTime $startDate): ?WorkingTime;
 
-    /**
-     * @return WorkingTime[]
-     */
-    public function findForMonthlyReport(string $employeeUuid, \DateTime $monthlyFormattedDate): array;
-
     public function create(WorkingTime $workingTime): void;
 
     public function save(): void;
