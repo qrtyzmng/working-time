@@ -36,4 +36,19 @@ class WorkingTime
         $this->endDateTime = $endDateTime;
         $this->employee = $employee;
     }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
+    }
+
+    public function getStartDateTime(): \DateTime
+    {
+        return $this->startDateTime;
+    }
+
+    public function getEndDateTime(): \DateTime
+    {
+        return $this->endDateTime;
+    }
 }

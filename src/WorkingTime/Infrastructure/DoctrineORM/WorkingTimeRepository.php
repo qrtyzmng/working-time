@@ -8,6 +8,7 @@ use App\WorkingTime\Domain\Entity\WorkingTime;
 use App\WorkingTime\Domain\Repository\WorkingTimeRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Uid\Uuid;
 
 class WorkingTimeRepository extends ServiceEntityRepository implements WorkingTimeRepositoryInterface
 {
@@ -19,6 +20,24 @@ class WorkingTimeRepository extends ServiceEntityRepository implements WorkingTi
     public function findByEmployeesStartDate(string $employeeUuid, \DateTime $startDate): ?WorkingTime
     {
         return $this->findOneBy(['employee' => $employeeUuid, 'startDay' => $startDate]);
+    }
+
+    /**
+     * @return WorkingTime[]
+     */
+    public function findForMonthlyReport(string $employeeUuid, \DateTime $monthlyFormattedDate): array
+    {
+        $startDate = $monthlyFormattedDate->modify('first day of this month');
+        $endDate = (new \DateTimeImmutable($monthlyFormattedDate->format('Y-m-d')))->modify('last day of this month');
+        $endDate = $endDate->modify('last day of this month');
+
+        $qb = $this->createQueryBuilder('w')
+            ->where('w.employee = :employee AND w.startDay BETWEEN :startDate AND :endDate')
+            ->setParameter('employee', Uuid::fromString($employeeUuid)->toBinary())
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate);
+
+        return $qb->getQuery()->getResult();
     }
 
     public function create(WorkingTime $workingTime): void

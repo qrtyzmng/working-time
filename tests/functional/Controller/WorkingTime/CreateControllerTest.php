@@ -22,7 +22,6 @@ final class CreateControllerTest extends FunctionalTestCase
         $this->client->request(
             method: Request::METHOD_POST,
             uri: self::URI,
-            server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([
                 'employeeUuid' => self::EMPLOYEE_EXISTING_UUID,
                 'startDateTime' => '2024-12-10T13:20:00P',
@@ -46,7 +45,6 @@ final class CreateControllerTest extends FunctionalTestCase
         $this->client->request(
             method: Request::METHOD_POST,
             uri: self::URI,
-            server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([
                 'employeeUuid' => '531f398f-bda7-488e-97da-907a473f43b9',
                 'startDateTime' => '2024-12-12T13:20:00P',
@@ -70,7 +68,6 @@ final class CreateControllerTest extends FunctionalTestCase
         $this->client->request(
             method: Request::METHOD_POST,
             uri: self::URI,
-            server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode([
                 'employeeUuid' => self::EMPLOYEE_EXISTING_UUID,
                 'startDateTime' => '2024-12-12T07:20:00P',
@@ -99,14 +96,12 @@ final class CreateControllerTest extends FunctionalTestCase
         $this->client->request(
             method: Request::METHOD_POST,
             uri: self::URI,
-            server: ['CONTENT_TYPE' => 'application/json'],
             content: $content,
         );
 
         $this->client->request(
             method: Request::METHOD_POST,
             uri: self::URI,
-            server: ['CONTENT_TYPE' => 'application/json'],
             content: $content,
         );
 
@@ -116,5 +111,27 @@ final class CreateControllerTest extends FunctionalTestCase
         $content = $response->getContent();
         $responseContents = json_decode($content, true);
         $this->assertSame('Start date already exists for this date', $responseContents['error']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_http_bad_request_on_missing_employees_uuid(): void
+    {
+        $this->client->request(
+            method: Request::METHOD_POST,
+            uri: self::URI,
+            content: json_encode([
+                'startDateTime' => '2024-12-12T13:20:00P',
+                'endDateTime' => '2024-12-12T15:20:00P',
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $content = $response->getContent();
+        $responseContents = json_decode($content, true);
+        $this->assertStringContainsString('This value should not be blank', $responseContents['error']);
     }
 }

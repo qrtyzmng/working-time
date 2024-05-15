@@ -11,11 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 readonly class CreateController
 {
-    public function __construct(private MessageBusInterface $messageBus, private SerializerInterface $serializer)
-    {
+    public function __construct(
+        private MessageBusInterface $messageBus,
+        private SerializerInterface $serializer,
+        private ValidatorInterface $validator,
+    ) {
     }
 
     #[Route('/api/v1/employee', name: 'create_employee', methods: [Request::METHOD_POST])]
@@ -28,6 +32,14 @@ readonly class CreateController
         );
 
         $command->uuid = Uuid::v4()->toRfc4122();
+        $validationErrors = $this->validator->validate($command);
+        if (\count($validationErrors) > 0) {
+            return new JsonResponse(
+                ['error' => (string) $validationErrors],
+                JsonResponse::HTTP_BAD_REQUEST
+            );
+        }
+
         $this->messageBus->dispatch($command);
 
         return new JsonResponse(

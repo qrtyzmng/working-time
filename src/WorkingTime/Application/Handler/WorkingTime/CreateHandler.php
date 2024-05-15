@@ -17,6 +17,8 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class CreateHandler
 {
+    private const int HOURLY_LIMIT_PER_DAY = 12;
+
     public function __construct(
         private EmployeeRepositoryInterface $repository,
         private WorkingTimeRepositoryInterface $workingTimeRepository,
@@ -33,7 +35,7 @@ class CreateHandler
         $startDateTime = \DateTime::createFromFormat(\DateTime::ATOM, $createCommand->startDateTime);
         $endDateTime = \DateTime::createFromFormat(\DateTime::ATOM, $createCommand->endDateTime);
 
-        if ($endDateTime->diff($startDateTime)->h > 12) {
+        if ($endDateTime->diff($startDateTime)->h > self::HOURLY_LIMIT_PER_DAY) {
             throw new InvalidDataRangeException('Data range exceeds 12 hours');
         }
 
